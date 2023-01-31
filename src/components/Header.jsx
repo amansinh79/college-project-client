@@ -5,7 +5,7 @@ import {
   MagnifyingGlassIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
-
+import Cookies from "js-cookie";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -100,18 +100,31 @@ export default function Header() {
                         aria-hidden="true"
                       />
                       <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                        Cart (0)
+                        Cart (
+                        {
+                          JSON.parse(localStorage.getItem("cart") || "[]")
+                            .length
+                        }
+                        )
                       </span>
                     </Link>
                   </div>
 
                   <div className="ml-4 flow-root lg:ml-8">
                     <span className="group-m-2 flex items-center p-2">
-                      <Link to="/login">
-                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                          Login
-                        </span>
-                      </Link>
+                      {Cookies.get("auth_token") ? (
+                        <Link to="/myaccount">
+                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                            My Account
+                          </span>
+                        </Link>
+                      ) : (
+                        <Link to="/login">
+                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                            Login
+                          </span>
+                        </Link>
+                      )}
                     </span>
                   </div>
                 </div>

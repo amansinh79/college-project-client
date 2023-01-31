@@ -1,4 +1,6 @@
+import { navigate } from "@reach/router";
 import { Link } from "@reach/router";
+import Cookies from "js-cookie";
 import React from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -13,9 +15,11 @@ export default function MyAccount() {
             My Account
           </h1>
           <div className="flex mt-16 justify-center gap-10 border-t border-b py-10 border-gray-200">
-            <div className="rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-50">
-              <Link to="/orderhistory">Order History</Link>
-            </div>
+            <Link to="/orderhistory">
+              <div className="rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-50">
+                Order History
+              </div>
+            </Link>
             <button
               type="submit"
               className="rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-50"
@@ -25,6 +29,11 @@ export default function MyAccount() {
             <button
               type="submit"
               className="rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+              onClick={(e) => {
+                e.preventDefault();
+                Cookies.remove("auth_token");
+                navigate("/");
+              }}
             >
               Logout{" "}
             </button>

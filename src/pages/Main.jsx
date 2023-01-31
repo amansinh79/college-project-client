@@ -1,37 +1,26 @@
-import { Fragment, useState } from "react";
-
 import { Link } from "@reach/router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
+import { useQuery } from "react-query";
+import api from "../utils/api.js";
+import TrendingProducts from "../components/TrendingProducts";
 const collections = [
   {
     name: "Women's",
-    href: "#",
+    href: "/search",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-01.jpg",
     imageAlt: "Woman wearing a comfortable cotton t-shirt.",
   },
   {
     name: "Men's",
-    href: "#",
+    href: "/search",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-02.jpg",
     imageAlt: "Man wearing a comfortable and casual cotton t-shirt.",
   },
 ];
-const trendingProducts = [
-  {
-    id: 1,
-    name: "Leather Long Wallet",
-    color: "Natural",
-    price: "$75",
-    href: "/product",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg",
-    imageAlt: "Hand stitched, orange leather long wallet.",
-  },
-];
+
 const perks = [
   {
     name: "Free returns",
@@ -63,7 +52,7 @@ const perks = [
   },
 ];
 
-export default function Example() {
+export default function Main() {
   return (
     <div className="bg-white">
       <Header />
@@ -106,7 +95,7 @@ export default function Example() {
             </div>
             <div className="relative py-32">
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-                Cloathing Bazar
+                Clothing Bazar
               </h1>
             </div>
           </div>
@@ -138,6 +127,19 @@ export default function Example() {
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50" />
                     </div>
+                    <div className="absolute inset-0 flex items-end rounded-lg p-6">
+                      <div>
+                        <p aria-hidden="true" className="text-sm text-white">
+                          Shop the collection
+                        </p>
+                        <h3 className="mt-1 font-semibold text-white">
+                          <Link to={collection.href}>
+                            <span className="absolute inset-0" />
+                            {collection.name}
+                          </Link>
+                        </h3>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -145,60 +147,7 @@ export default function Example() {
           </section>
         </div>
 
-        <section aria-labelledby="trending-heading">
-          <div className="mx-auto max-w-7xl py-24 px-4 sm:px-6 sm:py-32 lg:px-8 lg:pt-32">
-            <div className="md:flex md:items-center md:justify-between">
-              <h2
-                id="favorites-heading"
-                className="text-2xl font-bold tracking-tight text-gray-900"
-              >
-                Trending Products
-              </h2>
-              <a
-                href="#"
-                className="hidden text-sm font-medium text-gray-600 hover:text-gray-500 md:block"
-              >
-                Shop the collection
-                <span aria-hidden="true"> &rarr;</span>
-              </a>
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
-              {trendingProducts.map((product) => (
-                <div key={product.id} className="group relative">
-                  <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
-                    <img
-                      src={product.imageSrc}
-                      alt={product.imageAlt}
-                      className="h-full w-full object-cover object-center"
-                    />
-                  </div>
-                  <h3 className="mt-4 text-sm text-gray-700">
-                    <Link to={product.href}>
-                      <span className="absolute inset-0" />
-                      {product.name}
-                    </Link>
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-                  <p className="mt-1 text-sm font-medium text-gray-900">
-                    {product.price}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-8 text-sm md:hidden">
-              <a
-                href="#"
-                className="font-medium text-gray-600 hover:text-gray-500"
-              >
-                Shop the collection
-                <span aria-hidden="true"> &rarr;</span>
-              </a>
-            </div>
-          </div>
-        </section>
-
+        <TrendingProducts />
         <section
           aria-labelledby="perks-heading"
           className="border-t border-gray-200 bg-gray-50"

@@ -1,4 +1,6 @@
+import { navigate } from "@reach/router";
 import { Link } from "@reach/router";
+import api from "../utils/api";
 
 export default function Signup() {
   return (
@@ -20,6 +22,25 @@ export default function Signup() {
             <div className="mt-8">
               <div className="mt-6">
                 <form action="#" method="POST" className="space-y-6">
+                  <div>
+                    <label
+                      htmlFor="usernmae"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Username
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        id="username"
+                        name="username"
+                        type="username"
+                        autoComplete="username"
+                        required
+                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
                   <div>
                     <label
                       htmlFor="email"
@@ -67,7 +88,7 @@ export default function Signup() {
                     </label>
                     <div className="mt-1">
                       <input
-                        id="password"
+                        id="confirm-password"
                         name="password"
                         type="password"
                         autoComplete="current-password"
@@ -91,6 +112,28 @@ export default function Signup() {
                     <button
                       type="submit"
                       className="flex w-full justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const username =
+                          document.getElementById("username").value;
+                        const email = document.getElementById("email").value;
+                        const password =
+                          document.getElementById("password").value;
+                        const confirmPassword =
+                          document.getElementById("confirm-password").value;
+
+                        if (password !== confirmPassword) {
+                          alert("Passwords do not match");
+                          return;
+                        }
+                        api.signup(username, email, password).then((res) => {
+                          if (res) {
+                            navigate("/login");
+                          } else {
+                            alert("Something went wrong");
+                          }
+                        });
+                      }}
                     >
                       Sign up
                     </button>
