@@ -1,8 +1,6 @@
 import { Link } from "@reach/router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useQuery } from "react-query";
-import api from "../utils/api.js";
 import TrendingProducts from "../components/TrendingProducts";
 const collections = [
   {
@@ -11,6 +9,7 @@ const collections = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-01.jpg",
     imageAlt: "Woman wearing a comfortable cotton t-shirt.",
+    slug: "women",
   },
   {
     name: "Men's",
@@ -18,6 +17,7 @@ const collections = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-02.jpg",
     imageAlt: "Man wearing a comfortable and casual cotton t-shirt.",
+    slug: "men",
   },
 ];
 
@@ -133,7 +133,11 @@ export default function Main() {
                           Shop the collection
                         </p>
                         <h3 className="mt-1 font-semibold text-white">
-                          <Link to={collection.href}>
+                          <Link
+                            to={collection.href}
+                            state={{ slug: collection.slug }}
+                            replace
+                          >
                             <span className="absolute inset-0" />
                             {collection.name}
                           </Link>

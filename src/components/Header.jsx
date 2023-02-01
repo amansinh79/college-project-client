@@ -1,25 +1,10 @@
 import React from "react";
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import { Link } from "@reach/router";
 import {
   MagnifyingGlassIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
 import Cookies from "js-cookie";
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-const navigation = {
-  categories: [
-    {
-      name: "Women",
-    },
-    {
-      name: "Men",
-    },
-  ],
-};
 
 export default function Header() {
   return (
@@ -37,40 +22,6 @@ export default function Header() {
                     alt=""
                   />
                 </Link>
-              </div>
-
-              <div className="h-full lg:flex">
-                <Popover.Group className="px-4 h-full">
-                  <div className="flex h-full justify-center space-x-8">
-                    {navigation.categories.map((category) => (
-                      <Popover key={category.name} className="flex">
-                        {({ open }) => (
-                          <>
-                            <div className="relative flex">
-                              <Popover.Button
-                                className={classNames(
-                                  open
-                                    ? "text-gray-600"
-                                    : "text-gray-700 hover:text-gray-800",
-                                  "relative flex items-center justify-center text-sm font-medium transition-colors duration-200 ease-out"
-                                )}
-                              >
-                                {category.name}
-                                <span
-                                  className={classNames(
-                                    open ? "bg-gray-600" : "",
-                                    "absolute inset-x-0 -bottom-px z-20 h-0.5 transition duration-200 ease-out"
-                                  )}
-                                  aria-hidden="true"
-                                />
-                              </Popover.Button>
-                            </div>
-                          </>
-                        )}
-                      </Popover>
-                    ))}
-                  </div>
-                </Popover.Group>
               </div>
 
               <div className="flex flex-1 items-center justify-end">

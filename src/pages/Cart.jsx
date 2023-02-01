@@ -266,6 +266,17 @@ export default function Cart() {
                       return;
                     }
 
+                    // if (api.isUserInfoFilled()) {
+                    //   const isRedirect = confirm(
+                    //     "Please fill your user info first, press OK to fill info or cancel to fill info later"
+                    //   );
+
+                    //   if (isRedirect) {
+                    //     navigate("/myaccount");
+                    //   }
+                    //   return;
+                    // }
+
                     const res = await cart.placeOrder();
                     if (res) {
                       queryClient.invalidateQueries("cart");

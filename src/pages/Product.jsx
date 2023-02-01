@@ -120,7 +120,6 @@ export default function Product(props) {
                 onClick={(e) => {
                   e.preventDefault();
                   cart.addToCart(product.id, selectedSize.name);
-                  alert("Added to cart");
                 }}
               >
                 Add to cart

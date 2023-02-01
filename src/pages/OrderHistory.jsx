@@ -1,53 +1,21 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const orders = [
-  {
-    number: "4376",
-    status: "Delivered on January 22, 2021",
-    href: "#",
-    invoiceHref: "#",
-    products: [
-      {
-        id: 1,
-        name: "Machined Brass Puzzle",
-        href: "#",
-        price: "$95.00",
-        color: "Brass",
-        size: '3" x 3" x 3"',
-        imageSrc:
-          "https://tailwindui.com/img/ecommerce-images/order-history-page-07-product-01.jpg",
-        imageAlt:
-          "Brass puzzle in the shape of a jack with overlapping rounded posts.",
-      },
-      // More products...
-    ],
-  },
-  {
-    number: "4376",
-    status: "Delivered on January 22, 2021",
-    href: "#",
-    invoiceHref: "#",
-    products: [
-      {
-        id: 1,
-        name: "Machined Brass Puzzle",
-        href: "#",
-        price: "$95.00",
-        color: "Brass",
-        size: '3" x 3" x 3"',
-        imageSrc:
-          "https://tailwindui.com/img/ecommerce-images/order-history-page-07-product-01.jpg",
-        imageAlt:
-          "Brass puzzle in the shape of a jack with overlapping rounded posts.",
-      },
-      // More products...
-    ],
-  },
-  // More orders...
-];
+import { Link } from "@reach/router";
+import api from "../utils/api";
+import { useQuery, useQueryClient } from "react-query";
 
 export default function OrderHistory() {
+  const queryClient = useQueryClient();
+  const {
+    data: orders,
+    isError,
+    error,
+    isLoading,
+  } = useQuery("orders", api.getOrders);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+
   return (
     <div className="bg-white">
       <Header />
@@ -57,91 +25,97 @@ export default function OrderHistory() {
             Your Orders
           </h1>
           <p className="mt-2 text-sm text-gray-500">
-            Check the status of recent orders, manage returns, and discover
-            similar products.
+            Check the status of recent orders, cancel orders, and more.
           </p>
         </div>
 
-        <div className="mt-12 space-y-16 sm:mt-16">
-          {orders.map((order) => (
-            <section
-              key={order.number}
-              aria-labelledby={`${order.number}-heading`}
-            >
-              <div className="space-y-1 md:flex md:items-baseline md:space-y-0 md:space-x-4">
+        {orders.length === 0 && (
+          <div className="mt-12 space-y-16 sm:mt-16 divide-black divide-y">
+            <section aria-labelledby="order-heading">
+              <div className="space-y-1 mt-10 md:flex md:items-baseline md:space-y-0 md:space-x-4">
                 <h2
-                  id={`${order.number}-heading`}
+                  id="order-heading"
+                  className="text-lg font-medium text-gray-600 md:flex-shrink-0"
+                >
+                  You have not ordered anything yet.
+                </h2>
+              </div>
+            </section>
+          </div>
+        )}
+        <div className="mt-12 space-y-16 sm:mt-16 divide-black divide-y">
+          {orders.map((order) => (
+            <section key={order.id} aria-labelledby={`${order.id}-heading`}>
+              <div className="space-y-1 mt-10 md:flex md:items-baseline md:space-y-0 md:space-x-4">
+                <h2
+                  id={`${order.id}-heading`}
                   className="text-lg font-medium text-gray-900 md:flex-shrink-0"
                 >
-                  Order #{order.number}
+                  Order #{order.id}
                 </h2>
                 <div className="space-y-5 sm:flex sm:items-baseline sm:justify-between sm:space-y-0 md:min-w-0 md:flex-1">
-                  <p className="text-sm font-medium text-gray-500">
-                    {order.status}
-                  </p>
-                  <div className="flex text-sm font-medium">
-                    <a
-                      href={order.href}
-                      className="text-indigo-600 hover:text-indigo-500"
-                    >
-                      Manage order
-                    </a>
-                    <div className="ml-4 border-l border-gray-200 pl-4 sm:ml-6 sm:pl-6">
-                      <a
-                        href={order.invoiceHref}
-                        className="text-indigo-600 hover:text-indigo-500"
+                  <div></div>
+                  <div className="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:w-40 sm:flex-none">
+                    {order.status === "Placed" && (
+                      <button
+                        type="button"
+                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-2 px-2.5 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-full sm:flex-grow-0"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          const res = await api.cancelOrder(order.id);
+                          if (res) {
+                            alert("Order has been cancelled");
+                            queryClient.invalidateQueries("orders");
+                          } else {
+                            alert("something went wrong");
+                          }
+                        }}
                       >
-                        View Invoice
-                      </a>
-                    </div>
+                        Cancel Order
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
 
               <div className="mt-6 -mb-6 flow-root divide-y divide-gray-200 border-t border-gray-200">
                 {order.products.map((product) => (
-                  <div key={product.id} className="py-6 sm:flex">
+                  <div
+                    key={product.id + order.id + product.size}
+                    className="py-6 sm:flex"
+                  >
                     <div className="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
                       <img
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
+                        src={product.thumbnail}
                         className="h-20 w-20 flex-none rounded-md object-cover object-center sm:h-48 sm:w-48"
                       />
-                      <div className="min-w-0 flex-1 pt-1.5 sm:pt-0">
+                      <div className="min-w-0 flex flex-col gap-2 pt-1.5 sm:pt-0">
                         <h3 className="text-sm font-medium text-gray-900">
-                          <a href={product.href}>{product.name}</a>
+                          <Link to={"/product/" + product.slug}>
+                            {product.name}
+                          </Link>
                         </h3>
                         <p className="truncate text-sm text-gray-500">
-                          <span>{product.color}</span>{" "}
-                          <span
-                            className="mx-1 text-gray-400"
-                            aria-hidden="true"
-                          >
-                            &middot;
-                          </span>{" "}
-                          <span>{product.size}</span>
+                          Size : <span>{product.size}</span>
+                        </p>
+                        <p className=" text-sm text-gray-500">
+                          Quantity : {product.quantity}
                         </p>
                         <p className="mt-1 font-medium text-gray-900">
-                          {product.price}
+                          ₹ {product.price}
                         </p>
                       </div>
                     </div>
-                    <div className="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:w-40 sm:flex-none">
-                      <button
-                        type="button"
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-full sm:flex-grow-0"
-                      >
-                        Buy again
-                      </button>
-                      <button
-                        type="button"
-                        className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white py-2 px-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-full sm:flex-grow-0"
-                      >
-                        Shop similar
-                      </button>
-                    </div>
                   </div>
                 ))}
+                <div className="pt-3 flex justify-between">
+                  <p className="text-lg font-medium text-gray-600">
+                    Status : {order.status}
+                  </p>
+                  <p className="text-lg font-medium text-gray-600">
+                    Total : ₹ {order.total}
+                  </p>
+                </div>
               </div>
             </section>
           ))}

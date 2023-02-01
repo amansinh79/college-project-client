@@ -1,6 +1,11 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "@reach/router";
+import { useState } from "react";
+import queryString from "query-string";
+import api from "../utils/api";
+import { useQuery, useQueryClient } from "react-query";
+import { useEffect } from "react";
 
 const filters = [
   {
@@ -11,97 +16,43 @@ const filters = [
       { value: "women", label: "Women" },
     ],
   },
-  {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "white", label: "White" },
-      { value: "beige", label: "Beige" },
-      { value: "blue", label: "Blue" },
-      { value: "brown", label: "Brown" },
-      { value: "green", label: "Green" },
-      { value: "purple", label: "Purple" },
-    ],
-  },
-  {
-    id: "sizes",
-    name: "Sizes",
-    options: [
-      { value: "xs", label: "XS" },
-      { value: "s", label: "S" },
-      { value: "m", label: "M" },
-      { value: "l", label: "L" },
-      { value: "xl", label: "XL" },
-      { value: "2xl", label: "2XL" },
-    ],
-  },
-];
-const products = [
-  {
-    id: 1,
-    name: "Basic Tee 8-Pack",
-    href: "/product",
-    price: "$256",
-    description:
-      "Get the full lineup of our Basic Tees. Have a fresh shirt all week, and an extra for laundry day.",
-    options: "8 colors",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-01.jpg",
-    imageAlt:
-      "Eight shirts arranged on table in black, olive, grey, blue, white, red, mustard, and green.",
-  },
-  {
-    id: 2,
-    name: "Basic Tee",
-    href: "/product",
-    price: "$32",
-    description:
-      "Look like a visionary CEO and wear the same black t-shirt every day.",
-    options: "Black",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg",
-    imageAlt: "Front of plain black t-shirt.",
-  },
-  {
-    id: 2,
-    name: "Basic Tee",
-    href: "/product",
-    price: "$32",
-    description:
-      "Look like a visionary CEO and wear the same black t-shirt every day.",
-    options: "Black",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg",
-    imageAlt: "Front of plain black t-shirt.",
-  },
-  {
-    id: 2,
-    name: "Basic Tee",
-    href: "/product",
-    price: "$32",
-    description:
-      "Look like a visionary CEO and wear the same black t-shirt every day.",
-    options: "Black",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg",
-    imageAlt: "Front of plain black t-shirt.",
-  },
-  {
-    id: 2,
-    name: "Basic Tee",
-    href: "/product",
-    price: "$32",
-    description:
-      "Look like a visionary CEO and wear the same black t-shirt every day.",
-    options: "Black",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg",
-    imageAlt: "Front of plain black t-shirt.",
-  },
-  // More products...
 ];
 
-export default function Search() {
+let query = {};
+
+export default function Search(props) {
+  const queryClient = useQueryClient();
+  const [price, setPrice] = useState(500);
+  const {
+    data: products,
+    isError,
+    error,
+    isLoading,
+  } = useQuery("Products", async () => {
+    if (props.location.state.slug && !query.category) {
+      query.category = props.location.state.slug;
+    }
+    if (Object.entries(query).length > 0) {
+      return await api.getProducts(queryString.stringify(query));
+    } else {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    return () => {
+      query = {};
+    };
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>{error.message}</div>;
+  }
+
   return (
     <div className="bg-white">
       <Header />
@@ -123,6 +74,12 @@ export default function Search() {
                 <button
                   type="submit"
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-base font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const search = document.getElementById("search").value;
+                    query.search_query = search;
+                    queryClient.invalidateQueries("Products");
+                  }}
                 >
                   Search
                 </button>
@@ -153,8 +110,16 @@ export default function Search() {
                                 id={`${section.id}-${optionIdx}`}
                                 name={`${section.id}[]`}
                                 defaultValue={option.value}
-                                type="checkbox"
+                                type="radio"
                                 className="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-gray-500"
+                                defaultChecked={
+                                  option.value === props.location.state.slug ||
+                                  false
+                                }
+                                onChange={(e) => {
+                                  query.category = e.target.value;
+                                  queryClient.invalidateQueries("Products");
+                                }}
                               />
                               <label
                                 htmlFor={`${section.id}-${optionIdx}`}
@@ -168,6 +133,25 @@ export default function Search() {
                       </fieldset>
                     </div>
                   ))}
+                  <div className="pt-8">
+                    <legend className="flex justify-between text-sm font-medium text-gray-900 pb-2">
+                      Price <span>{price}</span>
+                    </legend>
+                    <input
+                      type="range"
+                      min={500}
+                      max={5000}
+                      step={500}
+                      className="accent-gray-600 w-full h-6 p-0 bg-transparent focus:outline-none focus:ring-0 focus:shadow-none"
+                      id="range"
+                      defaultValue={price}
+                      onChange={(e) => {
+                        setPrice(e.target.value);
+                        query.price = e.target.value;
+                        queryClient.invalidateQueries("Products");
+                      }}
+                    />
+                  </div>
                 </form>
               </div>
             </aside>
@@ -180,44 +164,46 @@ export default function Search() {
                 Products
               </h2>
 
-              <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
-                {products.map((product) => (
-                  <div
-                    key={product.id}
-                    className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
-                  >
-                    <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
-                      <img
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
-                        className="h-full w-full object-cover object-center sm:h-full sm:w-full"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col space-y-2 p-4">
-                      <h3 className="text-sm font-medium text-gray-900">
-                        <Link to={product.href}>
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-0"
-                          />
-                          {product.name}
-                        </Link>
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {product.description}
-                      </p>
-                      <div className="flex flex-1 flex-col justify-end">
-                        <p className="text-sm italic text-gray-500">
-                          {product.options}
+              {products.length > 0 ? (
+                <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
+                  {products.map((product) => (
+                    <div
+                      key={product.id}
+                      className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
+                    >
+                      <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
+                        <img
+                          src={product.thumbnail}
+                          className="h-full w-full object-cover object-center sm:h-full sm:w-full"
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col space-y-2 p-4">
+                        <h3 className="text-sm font-medium text-gray-900">
+                          <Link to={"/product/" + product.slug}>
+                            <span
+                              aria-hidden="true"
+                              className="absolute inset-0"
+                            />
+                            {product.name}
+                          </Link>
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {product.description.slice(0, 100) + "..."}
                         </p>
-                        <p className="text-base font-medium text-gray-900">
-                          {product.price}
-                        </p>
+                        <div className="flex flex-1 flex-col justify-end">
+                          <p className="text-base font-medium text-gray-900">
+                            ₹ {product.price}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center w-full text-2xl font-bold">
+                  <p>No products found! Try using different filters</p>
+                </div>
+              )}
             </section>
           </div>
         </main>

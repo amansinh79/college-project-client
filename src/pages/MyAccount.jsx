@@ -20,12 +20,7 @@ export default function MyAccount() {
                 Order History
               </div>
             </Link>
-            <button
-              type="submit"
-              className="rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-            >
-              Change Password
-            </button>
+
             <button
               type="submit"
               className="rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-50"
@@ -39,10 +34,13 @@ export default function MyAccount() {
             </button>
           </div>
           <form className="pt-16">
-            <div className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
+            <div
+              id="info"
+              className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0"
+            >
               <div>
                 <h3
-                  id="contact-info-heading"
+                  id="contact-info"
                   className="text-lg font-medium text-gray-900"
                 >
                   Contact information
@@ -61,6 +59,40 @@ export default function MyAccount() {
                       id="email-address"
                       name="email-address"
                       autoComplete="email"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Name
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      autoComplete="name"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <label
+                    htmlFor="phone-number"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Phone number
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="tel"
+                      id="phone-number"
+                      name="phone-number"
+                      autoComplete="tel"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
                     />
                   </div>
@@ -103,7 +135,7 @@ export default function MyAccount() {
                     </label>
                     <div className="mt-1">
                       <input
-                        type="text"
+                        type="date"
                         name="expiration-date"
                         id="expiration-date"
                         autoComplete="cc-exp"
@@ -117,7 +149,7 @@ export default function MyAccount() {
                       htmlFor="cvc"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      CVC
+                      CVV
                     </label>
                     <div className="mt-1">
                       <input
