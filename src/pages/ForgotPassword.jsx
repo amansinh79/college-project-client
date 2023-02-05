@@ -1,4 +1,5 @@
 import { Link } from "@reach/router";
+import api from "../utils/api";
 
 export default function ForgotPassword() {
   return (
@@ -42,6 +43,16 @@ export default function ForgotPassword() {
                     <button
                       type="submit"
                       className="flex w-full justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        const email = document.getElementById("email").value;
+                        const res = await api.forgotPassword(email);
+                        if (res) {
+                          alert("Check your email for a reset link");
+                        } else {
+                          alert("Something went wrong");
+                        }
+                      }}
                     >
                       Send Reset Link
                     </button>

@@ -1,4 +1,15 @@
+import { navigate } from "@reach/router";
+import { useLocation } from "@reach/router";
+import queryString from "query-string";
+import api from "../utils/api";
+
 export default function ResetPassword() {
+  const location = useLocation();
+  const { token, userid } = queryString.parse(location.search);
+
+  if (!token || !userid) {
+    return <div>Invalid Link</div>;
+  }
   return (
     <>
       <div className=" min-h-full h-screen w-screen">
@@ -47,7 +58,7 @@ export default function ResetPassword() {
                       <input
                         id="confirmpassword"
                         name="confirmpassword"
-                        type="confirmpassword"
+                        type="password"
                         autoComplete="confirmpassword"
                         required
                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
@@ -58,6 +69,30 @@ export default function ResetPassword() {
                     <button
                       type="submit"
                       className="flex w-full justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        const password =
+                          document.getElementById("password").value;
+                        const confirmpassword =
+                          document.getElementById("confirmpassword").value;
+                        if (password !== confirmpassword) {
+                          alert("Password doesn't match");
+                          return;
+                        }
+
+                        const res = await api.resetPassword(
+                          password,
+                          token,
+                          userid
+                        );
+
+                        if (res) {
+                          alert("Password Reset Successfully");
+                          navigate("/login");
+                        } else {
+                          alert("Password Reset Failed");
+                        }
+                      }}
                     >
                       Reset Password
                     </button>
