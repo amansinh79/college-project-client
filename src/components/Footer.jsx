@@ -1,4 +1,5 @@
 import React from "react";
+import api from "../utils/api";
 
 const footerNavigation = {
   products: [
@@ -101,29 +102,45 @@ export default function Footer() {
 
             {/* Newsletter section */}
             <div className="mt-12 md:col-span-8 md:col-start-3 md:row-start-2 md:mt-0 lg:col-span-4 lg:col-start-9 lg:row-start-1">
-              <h3 className="text-sm font-medium text-gray-900">
-                Sign up for our newsletter
+              <h3 className="text-base font-medium text-gray-900">
+                Give your feedback{" "}
               </h3>
               <p className="mt-6 text-sm text-gray-500">
-                The latest deals and savings, sent to your inbox weekly.
+                you can express your thoughts on any of our products or
+                services.
               </p>
-              <form className="mt-2 flex sm:max-w-md">
-                <label htmlFor="email-address" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="email-address"
+              <form className="mt-2 sm:max-w-md">
+                <textarea
+                  id="feedback"
                   type="text"
-                  autoComplete="email"
                   required
-                  className="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white py-2 px-4 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  rows={4}
+                  placeholder="Your feedback"
+                  className="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white py-2 px-4 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
                 />
-                <div className="ml-4 flex-shrink-0">
+                <div className="mt-2 flex-shrink-0">
                   <button
                     type="submit"
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-base font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                    onClick={async (e) => {
+                      e.preventDefault();
+
+                      const feedback =
+                        document.getElementById("feedback").value;
+
+                      if (feedback === "") {
+                        alert("Please enter your feedback");
+                        return;
+                      }
+                      const res = await api.createFeedback(feedback);
+                      if (res) {
+                        alert("Thank you for your feedback");
+                      } else {
+                        alert("You need to login to be able to send feedback");
+                      }
+                    }}
                   >
-                    Sign up
+                    Submit{" "}
                   </button>
                 </div>
               </form>

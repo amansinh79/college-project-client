@@ -16,7 +16,8 @@ export default function MyAccount() {
     isLoading,
   } = useQuery("userinfo", async () => {
     const data = await api.getUserInfo();
-    data.expirydate = data.expirydate.slice(0, 7);
+    if (data.expirydate) data.expirydate = data.expirydate.slice(0, 7);
+
     return data;
   });
 

@@ -2,16 +2,16 @@ import Cookies from "js-cookie";
 
 const endpoint = "http://localhost:3000";
 
-const headers = {
+const headers = () => ({
   "Content-Type": "application/json",
   Accept: "application/json",
   auth_token: Cookies.get("auth_token"),
-};
+});
 
 const login = async (username, password) => {
   const res = await fetch(`${endpoint}/login`, {
     method: "POST",
-    headers,
+    headers: headers(),
     body: JSON.stringify({ username, password }),
   });
 
@@ -26,7 +26,7 @@ const login = async (username, password) => {
 const signup = async (username, email, password) => {
   const res = await fetch(`${endpoint}/signup`, {
     method: "POST",
-    headers,
+    headers: headers(),
     body: JSON.stringify({ username, email, password }),
   });
 
@@ -36,7 +36,7 @@ const signup = async (username, email, password) => {
 const getTrendingProducts = async () => {
   const res = await fetch(`${endpoint}/trending_products`, {
     method: "GET",
-    headers,
+    headers: headers(),
   });
 
   return await res.json();
@@ -45,7 +45,7 @@ const getTrendingProducts = async () => {
 const getProductBySlug = async (slug) => {
   const res = await fetch(`${endpoint}/product/${slug}`, {
     method: "GET",
-    headers,
+    headers: headers(),
   });
 
   return await res.json();
@@ -54,7 +54,7 @@ const getProductBySlug = async (slug) => {
 const getProductById = async (id) => {
   const res = await fetch(`${endpoint}/product/${id}`, {
     method: "GET",
-    headers,
+    headers: headers(),
   });
   return await res.json();
 };
@@ -62,7 +62,7 @@ const getProductById = async (id) => {
 const addOrder = async (order) => {
   const res = await fetch(`${endpoint}/add_order`, {
     method: "POST",
-    headers,
+    headers: headers(),
     body: JSON.stringify(order),
   });
 
@@ -72,7 +72,7 @@ const addOrder = async (order) => {
 const isUserInfoFilled = async () => {
   const res = await fetch(`${endpoint}/is_user_info_filled`, {
     method: "GET",
-    headers,
+    headers: headers(),
   });
 
   if (res.status === 200) {
@@ -85,7 +85,7 @@ const isUserInfoFilled = async () => {
 const cancelOrder = async (id) => {
   const res = await fetch(`${endpoint}/cancel_order`, {
     method: "DELETE",
-    headers,
+    headers: headers(),
     body: JSON.stringify({ id }),
   });
 
@@ -95,7 +95,7 @@ const cancelOrder = async (id) => {
 const getOrders = async () => {
   const res = await fetch(`${endpoint}/get_orders`, {
     method: "GET",
-    headers,
+    headers: headers(),
   });
 
   return res.ok;
@@ -104,7 +104,7 @@ const getOrders = async () => {
 const getProducts = async (query) => {
   const res = await fetch(`${endpoint}/products?${query}`, {
     method: "GET",
-    headers,
+    headers: headers(),
   });
 
   return await res.json();
@@ -119,7 +119,7 @@ const getRelatedProducts = async (id) => {
 const forgotPassword = async (email) => {
   const res = await fetch(`${endpoint}/forgot_password`, {
     method: "POST",
-    headers,
+    headers: headers(),
     body: JSON.stringify({ email }),
   });
 
@@ -129,7 +129,7 @@ const forgotPassword = async (email) => {
 const resetPassword = async (password, token, userid) => {
   const res = await fetch(`${endpoint}/reset_password`, {
     method: "POST",
-    headers,
+    headers: headers(),
     body: JSON.stringify({ password, token, userid }),
   });
 
@@ -139,7 +139,7 @@ const resetPassword = async (password, token, userid) => {
 const updateUserInfo = async (data) => {
   const res = await fetch(`${endpoint}/update_user_info`, {
     method: "POST",
-    headers,
+    headers: headers(),
     body: JSON.stringify(data),
   });
 
@@ -149,7 +149,7 @@ const updateUserInfo = async (data) => {
 const getUserInfo = async () => {
   const res = await fetch(`${endpoint}/get_user_info`, {
     method: "GET",
-    headers,
+    headers: headers(),
   });
 
   if (res.ok) {
@@ -158,7 +158,18 @@ const getUserInfo = async () => {
   return {};
 };
 
+const createFeedback = async (feedback) => {
+  const res = await fetch(`${endpoint}/create_feedback`, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ feedback }),
+  });
+
+  return res.ok;
+};
+
 export default {
+  createFeedback,
   getUserInfo,
   updateUserInfo,
   resetPassword,
