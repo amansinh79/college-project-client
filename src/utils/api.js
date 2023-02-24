@@ -75,11 +75,7 @@ const isUserInfoFilled = async () => {
     headers: headers(),
   });
 
-  if (res.status === 200) {
-    return await res.json();
-  } else {
-    return false;
-  }
+  return res.ok;
 };
 
 const cancelOrder = async (id) => {
@@ -98,7 +94,7 @@ const getOrders = async () => {
     headers: headers(),
   });
 
-  return res.ok;
+  return await res.json();
 };
 
 const getProducts = async (query) => {

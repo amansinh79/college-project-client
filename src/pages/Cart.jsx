@@ -251,8 +251,8 @@ export default function Cart() {
                       alert("You need to login to place order");
                       return;
                     }
-
-                    if (api.isUserInfoFilled()) {
+                    console.log(await api.isUserInfoFilled());
+                    if (!(await api.isUserInfoFilled())) {
                       const isRedirect = confirm(
                         "Please fill your user info first, press OK to fill info or cancel to fill info later"
                       );
