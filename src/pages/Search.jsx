@@ -173,7 +173,7 @@ export default function Search(props) {
                     >
                       <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                         <img
-                          src={product.thumbnail}
+                          src={import.meta.env.VITE_SERVER + product.thumbnail}
                           className="h-full w-full object-cover object-center sm:h-full sm:w-full"
                         />
                       </div>

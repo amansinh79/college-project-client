@@ -52,6 +52,7 @@ export default function Footer() {
                         return;
                       }
                       const res = await api.createFeedback(feedback);
+                      console.log(res);
                       if (res) {
                         alert("Thank you for your feedback");
                       } else {

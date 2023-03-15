@@ -72,7 +72,7 @@ export default function Cart() {
                   >
                     <div className="flex-shrink-0">
                       <img
-                        src={product.thumbnail}
+                        src={import.meta.env.VITE_SERVER + product.thumbnail}
                         className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
                       />
                     </div>

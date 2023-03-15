@@ -86,7 +86,7 @@ export default function OrderHistory() {
                   >
                     <div className="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
                       <img
-                        src={product.thumbnail}
+                        src={import.meta.env.VITE_SERVER + product.thumbnail}
                         className="h-20 w-20 flex-none rounded-md object-cover object-center sm:h-48 sm:w-48"
                       />
                       <div className="min-w-0 flex flex-col gap-2 pt-1.5 sm:pt-0">

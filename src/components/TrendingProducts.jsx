@@ -38,7 +38,7 @@ export default function TrendingProducts() {
             <div key={product.id} className="group relative">
               <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
                 <img
-                  src={product.thumbnail}
+                  src={import.meta.env.VITE_SERVER + product.thumbnail}
                   className="h-full w-full object-cover object-center"
                 />
               </div>

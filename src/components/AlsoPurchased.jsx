@@ -21,7 +21,7 @@ export default function AlsoPurchased() {
         <div key={relatedProduct.id} className="group relative">
           <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:aspect-none lg:h-80">
             <img
-              src={relatedProduct.thumbnail}
+              src={import.meta.env.VITE_SERVER + relatedProduct.thumbnail}
               className="h-full w-full object-cover object-center lg:h-full lg:w-full"
             />
           </div>

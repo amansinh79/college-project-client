@@ -64,7 +64,11 @@ export default function Product(props) {
             <h2 className="sr-only">Images</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               {product.Attachments.map((image) => (
-                <img key={image.id} src={image.url} className={"rounded-lg"} />
+                <img
+                  key={image.id}
+                  src={import.meta.env.VITE_SERVER + image.url}
+                  className={"rounded-lg"}
+                />
               ))}
             </div>
           </div>
