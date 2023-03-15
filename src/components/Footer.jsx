@@ -12,11 +12,7 @@ export default function Footer() {
           <div className="flex justify-between divide-x">
             <div className="mx-auto">
               <div className="col-span-1 md:col-span-2 lg:col-start-1 lg:row-start-1">
-                <img
-                  src="https://tailwindui.com/img/logos/mark.svg?color=gray&shade=600"
-                  alt=""
-                  className="h-8 w-auto"
-                />
+                <img src="mark.svg" alt="" className="h-8 w-auto" />
               </div>
             </div>
 

@@ -14,7 +14,7 @@ export default function OrderPlaced(props) {
       <main className="relative lg:min-h-full">
         <div className="h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
           <img
-            src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-hero.jpg"
+            src="confirmation-page-06-hero.jpg"
             alt="TODO"
             className="h-full w-full object-cover object-center"
           />

@@ -16,11 +16,7 @@ export default function Header() {
               <div className="lg:flex lg:flex-1 lg:items-center">
                 <Link to="/">
                   <span className="sr-only">Your Company</span>
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=gray&shade=600"
-                    alt=""
-                  />
+                  <img className="h-8 w-auto" src="mark.svg" alt="" />
                 </Link>
               </div>
 

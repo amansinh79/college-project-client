@@ -6,16 +6,14 @@ const collections = [
   {
     name: "Women's",
     href: "/search",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-01.jpg",
+    imageSrc: "home-page-04-collection-01.jpg",
     imageAlt: "Woman wearing a comfortable cotton t-shirt.",
     slug: "women",
   },
   {
     name: "Men's",
     href: "/search",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-02.jpg",
+    imageSrc: "home-page-04-collection-02.jpg",
     imageAlt: "Man wearing a comfortable and casual cotton t-shirt.",
     slug: "men",
   },
@@ -24,29 +22,25 @@ const collections = [
 const perks = [
   {
     name: "Free returns",
-    imageUrl:
-      "https://tailwindui.com/img/ecommerce/icons/icon-returns-light.svg",
+    imageUrl: "icon-returns-light.svg",
     description:
       "Not what you expected? Place it back in the parcel and attach the pre-paid postage stamp.",
   },
   {
     name: "Same day delivery",
-    imageUrl:
-      "https://tailwindui.com/img/ecommerce/icons/icon-calendar-light.svg",
+    imageUrl: "icon-calendar-light.svg",
     description:
       "We offer a delivery service that has never been done before. Checkout today and receive your products within hours.",
   },
   {
     name: "All year discount",
-    imageUrl:
-      "https://tailwindui.com/img/ecommerce/icons/icon-gift-card-light.svg",
+    imageUrl: "icon-gift-card-light.svg",
     description:
       'Looking for a deal? You can use the code "ALLYEAR" at checkout and get money off all year round.',
   },
   {
     name: "For the planet",
-    imageUrl:
-      "https://tailwindui.com/img/ecommerce/icons/icon-planet-light.svg",
+    imageUrl: "icon-planet-light.svg",
     description:
       "We’ve pledged 1% of sales to the preservation and restoration of the natural environment.",
   },
@@ -66,7 +60,7 @@ export default function Main() {
             <div className="relative w-full flex-1 bg-gray-800">
               <div className="absolute inset-0 overflow-hidden">
                 <img
-                  src="https://tailwindui.com/img/ecommerce-images/home-page-04-hero-full-width.jpg"
+                  src="home-page-04-hero-full-width.jpg"
                   alt=""
                   className="h-full w-full object-cover object-center"
                 />
@@ -84,7 +78,7 @@ export default function Main() {
               <div className="relative w-full flex-1 bg-gray-800">
                 <div className="absolute inset-0 overflow-hidden">
                   <img
-                    src="https://tailwindui.com/img/ecommerce-images/home-page-04-hero-full-width.jpg"
+                    src="home-page-04-hero-full-width.jpg"
                     alt=""
                     className="h-full w-full object-cover object-center"
                   />
